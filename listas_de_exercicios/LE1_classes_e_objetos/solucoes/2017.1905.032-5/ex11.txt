@@ -1,0 +1,2 @@
+Os métodos get e set ajudam na manutenção do código, por motivos de coerência,
+também ajudam na criação de rotinas de validação.

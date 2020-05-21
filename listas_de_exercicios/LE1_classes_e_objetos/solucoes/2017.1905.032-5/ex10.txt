@@ -1,0 +1,2 @@
+O construtor padrão serve apenas para iniciar a criação de um objeto, ele não faz nada.
+Os atributos de um objeto são inicializados com o seu tipo padrão.
