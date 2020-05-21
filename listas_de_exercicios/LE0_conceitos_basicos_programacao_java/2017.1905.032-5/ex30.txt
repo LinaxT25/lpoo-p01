@@ -1,0 +1,2 @@
+Utilizando if/else e alterando o valor da variável
+de condição de saída nos casos necessários.
