@@ -1,59 +1,117 @@
 package grafica;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 public class JanelaComposicao {
 	private JFrame janela;
 	private JMenuBar barraDeMenu;
-	private JMenu menuFile;
-	private JMenuItem menuFileNew;
-	private JMenuItem menuFileOpen;
 	
-	private JMenu menuEdit;
-	private JMenuItem menuEditUndo;
-	private JMenuItem menuEditRedo;
+	private BotaoDoMenuPrincipal botaoFile;
+	private BotaoDoMenuPrincipal botaoEdit;
 	
-	private JLabel textoQualquer1, textoQualquer2;
-	private JButton botaoQualquer;
+	private JLabel barraDeStatus;
 	
 	public JanelaComposicao(String titulo) {
 		janela = new JFrame(titulo);
 		//janela.setLayout(new GridLayout());
 		//janela.setLayout(new FlowLayout());
+		
 		janela.setLayout(new BorderLayout());
+		
 		barraDeMenu = new JMenuBar();
-		menuFile = new JMenu("File");
-		menuFileNew = new JMenuItem("new");
-		menuFileOpen = new JMenuItem("open");
-		menuFile.add(menuFileNew);
-		menuFile.add(menuFileOpen);
 		
-		menuEdit = new JMenu("Edit");
-		menuEditUndo = new JMenuItem("undo");
-		menuEditRedo = new JMenuItem("redo");
-		menuEdit.add(menuEditUndo);
-		menuEdit.add(menuEditRedo);
+		configuraBotaoFile();
+		configuraBotaoEdit();
 		
-		barraDeMenu.add(menuFile);
-		barraDeMenu.add(menuEdit);
+		barraDeMenu.add(botaoFile.getMenu());
+		barraDeMenu.add(botaoEdit.getMenu());
 		
-		textoQualquer1 = new JLabel("Sou um texto qualquer 1");
-		textoQualquer2 = new JLabel("Sou um texto qualquer 2");
-		botaoQualquer = new JButton("Sou um botao");
+		barraDeStatus = new JLabel("Barra de status (sul do BorderLayout)");
 		
-		janela.add(textoQualquer1, BorderLayout.NORTH);
-		janela.add(textoQualquer2, BorderLayout.SOUTH);
-		janela.add(botaoQualquer, BorderLayout.CENTER);
+		janela.add(barraDeStatus, BorderLayout.SOUTH);
+		
 		
 		janela.setJMenuBar(barraDeMenu);
 		janela.setSize(800, 600);
 		janela.setVisible(true);
+	}
+
+	private void configuraBotaoEdit() {
+		botaoEdit = new BotaoDoMenuPrincipal("Edit", 3);
+		botaoEdit.adicionaMenuItem("Undo"); // 0
+		botaoEdit.adicionaMenuItem("Redo"); // 1
+		botaoEdit.adicionaMenuItem("Cut"); // 2
+		
+		// Maneira 1
+		OuvidoDoBotaoUndo ouvidoDoBotaoUndo = new OuvidoDoBotaoUndo(barraDeStatus);
+		botaoEdit.configuraEventoDeMenuItem(0, ouvidoDoBotaoUndo);
+		
+		// Maneira 2
+		ActionListener ouvidoDoBotaoRedo = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent evento) {
+				barraDeStatus.setText("Cliquei no Redo");
+				
+			}
+		};
+		botaoEdit.configuraEventoDeMenuItem(1, ouvidoDoBotaoRedo);
+		
+		
+		// Maneira 3
+		ActionListener ouvidoDoBotaoCut = (ActionEvent evento) -> {
+			barraDeStatus.setText("Cliquei no Cut");
+		};
+		botaoEdit.configuraEventoDeMenuItem(2, ouvidoDoBotaoCut);
+	}
+
+	private void configuraBotaoFile() {
+		botaoFile = new BotaoDoMenuPrincipal("File", 3);
+		botaoFile.adicionaMenuItem("New");
+		botaoFile.adicionaMenuItem("Open");
+		botaoFile.adicionaMenuItem("List");
+		
+		botaoFile.configuraEventoDeMenuItem
+		(
+				0, 
+				(evento) -> { barraDeStatus.setText("Cliquei em new"); } // É o ouvido (listener)!
+		);
+		
+		botaoFile.configuraEventoDeMenuItem
+		(
+				1, 
+				(evento) -> { barraDeStatus.setText("Cliquei em open"); } // É o ouvido (listener)!
+		);
+		
+		ActionListener ouvidoDoBotaoList = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String nomeDeArquivos[] = new String[3];
+				nomeDeArquivos[0] = "oi.txt";
+				nomeDeArquivos[1] = "tchau.txt";
+				nomeDeArquivos[2] = "jiar_balsonoro.txt";
+				
+				
+				LayoutManager layout = new GridLayout(4, 1);
+				JPanel painel = new JPanel(layout);
+				
+				painel.add(new JLabel("Nome do arquivo"));
+				painel.add(new JLabel(nomeDeArquivos[0]));
+				painel.add(new JLabel(nomeDeArquivos[1]));
+				painel.add(new JLabel(nomeDeArquivos[2]));
+				
+				
+				janela.add(painel, BorderLayout.CENTER);
+			}
+		};
+		botaoFile.configuraEventoDeMenuItem(2, ouvidoDoBotaoList);
 	}
 }
