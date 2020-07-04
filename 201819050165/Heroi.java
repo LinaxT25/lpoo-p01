@@ -15,7 +15,8 @@ public abstract class Heroi implements MachucaAjuda
         habilidades = new String[10];
         setQuantidadeDeHabilidades(0);
     }
-//setters
+    
+    //setters
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -78,7 +79,7 @@ public abstract class Heroi implements MachucaAjuda
     public String getPaisNatal() {
         return paisNatal;
     }
-    
+
     public int getNivelDeResistencia() {
         return nivelDeResistencia;
     }
@@ -117,4 +118,3 @@ public abstract class Heroi implements MachucaAjuda
     }
 
 }
-

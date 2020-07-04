@@ -1,6 +1,6 @@
 public class Ciclope extends Heroi
 {
-    private int marcaDoOculos; //enum
+    private MarcaDoOculos marcaDoOculos; //enum
 
     //setter
     public void setMarcaDoOculos(int marcaDoOculos) {
@@ -12,7 +12,7 @@ public class Ciclope extends Heroi
     public int getMarcaDoOculos() {
         return marcaDoOculos;
     }
-    
+
     @Override
     public void machuca(Heroi superHeroi)
     {
